@@ -1,22 +1,27 @@
 {
-	"name": "mikro-config",
-	"version": "0.9.0",
-	"description": "tiny node config wrapper for plain JS configuration files",
-	"main": "mikro-config.js",
-	"dependencies": {
-		"lodash": "^3.7.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+ssh://git@github.com/B4nan/mikro-config.git"
-	},
-	"keywords": [
-		"config", "node", "es6", "micro", "mikro", "configuration"
-	],
-	"author": "Martin Adámek",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/B4nan/mikro-config/issues"
-	},
-	"homepage": "https://github.com/B4nan/mikro-config#readme"
+  "name": "mikro-config",
+  "version": "0.9.1",
+  "description": "tiny node config wrapper for plain JS configuration files",
+  "main": "mikro-config.js",
+  "dependencies": {
+    "lodash": "^3.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/B4nan/mikro-config.git"
+  },
+  "keywords": [
+    "config",
+    "node",
+    "es6",
+    "micro",
+    "mikro",
+    "configuration"
+  ],
+  "author": "Martin Adámek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/B4nan/mikro-config/issues"
+  },
+  "homepage": "https://github.com/B4nan/mikro-config#readme"
 }
