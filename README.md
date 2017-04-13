@@ -8,17 +8,19 @@ Tiny config helper, loads configuration in this order:
  - `/config/env/$NODE_ENV.local.js`
  - `/config/local.js`
 
+You can also use `JSON` format instead of plain JS objects.
+
 When there is no `NODE_ENV` set, it defaults to `development`. 
 
 You can adjust configuration directory with `NODE_CONFIG_DIR` environment variable.  
 
 ## Installation
 
-`yarn add mikro-config`
+`$ yarn add mikro-config`
  
 or 
 
-`npm install mikro-config`
+`$ npm install mikro-config`
 
 ## Sample configuration file
 
@@ -51,6 +53,35 @@ module.exports = {
   stringProperty: 'lol',
  
 };
+```
+
+Configuration files are simply required, so you can also use `JSON` format.
+
+`/config/default.json`
+
+```json
+{
+  "objectProperty": {
+    "path": "/etc/files",
+    "anotherProperty": {
+      "size": 10
+    }
+  },
+ 
+  "cache": {
+    "expiration": 300
+  },
+ 
+  "server": {
+    "port": 12345,
+    "host": "localhost",
+    "version": "1.2.3"
+  },
+ 
+  "boolProperty": true,
+  "stringProperty": "lol"
+ 
+}
 ```
 
 ## Usage
