@@ -1,0 +1,35 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "ignore": [
+    "node_modules"
+  ],
+  "rules": {
+    "arrow-spacing": ["error"],
+    "comma-dangle": ["error", "always-multiline"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "comma-style": ["error"],
+    "curly": ["error"],
+    "eol-last": ["error", "always"],
+    "eqeqeq": ["error"],
+    "func-call-spacing": ["error", "never"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "generator-star-spacing": ["error", "neither"],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+    "no-trailing-spaces": ["error"],
+    "no-throw-literal": ["error"],
+    "no-undef":  ["off"],
+    "no-var": ["error"],
+    "prefer-const": ["error"],
+    "spaced-comment": ["error", "always", { "exceptions": ["*"] }],
+    "space-infix-ops": ["error"],
+    "space-in-parens": ["error"],
+    "keyword-spacing": ["error"],
+    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "semi": ["error", "always"],
+    "strict": ["error", "global"]
+  }
+}
