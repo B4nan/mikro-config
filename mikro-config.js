@@ -1,6 +1,8 @@
 'use strict';
 
-const _ = require('lodash');
+const _get = require('lodash.get');
+const _has = require('lodash.has');
+const _merge = require('lodash.merge');
 const fs = require('fs');
 
 const ENVIRONMENT = process.env.NODE_ENV || 'development';
@@ -27,7 +29,7 @@ class Config {
    * @return {*}
    */
   get(key, defaultValue = undefined) {
-    return _.get(CONFIG, key, defaultValue);
+    return _get(CONFIG, key, defaultValue);
   }
 
   /**
@@ -35,7 +37,7 @@ class Config {
    * @return {Boolean}
    */
   has(key) {
-    return _.has(CONFIG, key);
+    return _has(CONFIG, key);
   }
 
   /**
@@ -63,7 +65,7 @@ class Config {
     this.addOptions(`${configDir}/local.js`);
 
     // support `config.foo.bar` syntax (instead of `config.get('foo.bar')`)
-    _.merge(this, CONFIG);
+    _merge(this, CONFIG);
   }
 
   /**
@@ -78,7 +80,7 @@ class Config {
       }
     }
 
-    _.merge(CONFIG, options);
+    _merge(CONFIG, options);
   }
 
   /**

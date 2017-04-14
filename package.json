@@ -3,9 +3,6 @@
   "version": "0.9.1",
   "description": "tiny node config wrapper for plain JS configuration files",
   "main": "mikro-config.js",
-  "dependencies": {
-    "lodash": "^3.7.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/B4nan/mikro-config.git"
@@ -23,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/B4nan/mikro-config/issues"
   },
-  "homepage": "https://github.com/B4nan/mikro-config#readme"
+  "homepage": "https://github.com/B4nan/mikro-config#readme",
+  "dependencies": {
+    "lodash.get": "^4.4.2",
+    "lodash.has": "^4.5.2",
+    "lodash.merge": "^4.6.0"
+  }
 }
