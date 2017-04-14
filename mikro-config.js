@@ -47,7 +47,7 @@ class Config {
    */
   _buildConfig(configDir, environment) {
     // load default config file
-    this.addOptions(configDir + '/default.js');
+    this.addOptions(configDir + '/default.js', true);
 
     // load additional config files
     if (fs.existsSync(configDir)) {
@@ -56,13 +56,13 @@ class Config {
     }
 
     // load _environment config
-    this.addOptions(`${configDir}/env/${environment}.js`);
+    this.addOptions(`${configDir}/env/${environment}.js`, true);
 
     // load local _environment config
-    this.addOptions(`${configDir}/env/${environment}.local.js`);
+    this.addOptions(`${configDir}/env/${environment}.local.js`, true);
 
     // load local config
-    this.addOptions(`${configDir}/local.js`);
+    this.addOptions(`${configDir}/local.js`, true);
 
     // support `config.foo.bar` syntax (instead of `config.get('foo.bar')`)
     _merge(this, CONFIG);
@@ -70,13 +70,16 @@ class Config {
 
   /**
    * @param {Object|String} options or path to config file to merge (checks for existence synchronously)
+   * @param {Boolean} [optional]
    */
-  addOptions(options) {
+  addOptions(options, optional = false) {
     if (typeof options === 'string') {
       if (fs.existsSync(options)) {
         options = require(options);
-      } else {
+      } else if (optional) {
         options = {};
+      } else {
+        throw new Error(`Configuration file '${options}' not found!`);
       }
     }
 
