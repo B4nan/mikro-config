@@ -1,0 +1,7 @@
+'use strict';
+
+module.exports.routes = {
+  route1: 'path1',
+  route2: 'path2',
+  route3: 'path3',
+};

@@ -47,22 +47,27 @@ class Config {
    */
   _buildConfig(configDir, environment) {
     // load default config file
-    this.addOptions(configDir + '/default.js', true);
+    this.addOptions(configDir + '/default', true);
 
     // load additional config files
     if (fs.existsSync(configDir)) {
-      const files = fs.readdirSync(configDir).filter(file => file.endsWith('.js') && !['default.js', 'local.js'].includes(file));
+      const filter = file => {
+        const isConfigFile = file.endsWith('.js') || file.endsWith('.json');
+        const isIgnored = ['default.js', 'default.json', 'local.js', 'local.json'].includes(file);
+        return isConfigFile && !isIgnored;
+      };
+      const files = fs.readdirSync(configDir).filter(filter);
       files.forEach(file => this.addOptions(`${configDir}/${file}`));
     }
 
     // load _environment config
-    this.addOptions(`${configDir}/env/${environment}.js`, true);
+    this.addOptions(`${configDir}/env/${environment}`, true);
 
     // load local _environment config
-    this.addOptions(`${configDir}/env/${environment}.local.js`, true);
+    this.addOptions(`${configDir}/env/${environment}.local`, true);
 
     // load local config
-    this.addOptions(`${configDir}/local.js`, true);
+    this.addOptions(`${configDir}/local`, true);
 
     // support `config.foo.bar` syntax (instead of `config.get('foo.bar')`)
     _merge(this, CONFIG);
@@ -74,6 +79,14 @@ class Config {
    */
   addOptions(options, optional = false) {
     if (typeof options === 'string') {
+      if (!options.endsWith('.js') && !options.endsWith('.json')) {
+        if (fs.existsSync(options + '.json')) {
+          options += '.json';
+        } else {
+          options += '.js';
+        }
+      }
+
       if (fs.existsSync(options)) {
         options = require(options);
       } else if (optional) {

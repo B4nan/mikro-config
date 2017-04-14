@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.NODE_CONFIG_DIR = '';
+
 test('no configuration', () => {
   const config = require('../mikro-config');
   expect(config).toEqual({});
