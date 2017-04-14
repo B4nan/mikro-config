@@ -2,6 +2,8 @@
 
 Tiny config helper built on top of `lodash`. 
 
+[![Build Status](https://travis-ci.org/B4nan/mikro-config.svg?branch=master)](https://travis-ci.org/B4nan/mikro-config)
+
 ## File order
 
 Mikro-config loads configuration in this order:
@@ -116,10 +118,10 @@ const config = require('mikro-config');
 console.log(config.has('cache.expiration')); // prints true
 ```
 
-### `config.addOptions(options: object|string)`
+### `config.addOptions(options: object|string, optional: bool)`
 
 This method is used for adding configuration on the fly. You can pass an object with additional 
-configuration, or a string path to JS file, that exports the configuration. 
+configuration, or a string path to JS/JSON file, that exports the configuration. 
 
 ```javascript
 const config = require('mikro-config');
