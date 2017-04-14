@@ -1,6 +1,7 @@
 # mikro-config
 
-Tiny config helper built on top of `lodash`. 
+Tiny config helper built on top of `lodash`. It can merge multiple configuration files, 
+by recursively merging their properties (not replacing entire objects, but merging them). 
 
 [![Build Status](https://travis-ci.org/B4nan/mikro-config.svg?branch=master)](https://travis-ci.org/B4nan/mikro-config)
 
@@ -134,4 +135,20 @@ console.log(config.newKey); // prints 123
 const config = require('mikro-config');
 config.addOptions(__dirname + '/routes'); // load routes.js file exporting routes object
 console.log(config.routes); // prints routes object 
+```
+
+## Merging configuration
+
+When multiple configuration files has same keys, their values are merged instead of replacement. 
+
+```javascript
+const config = require('mikro-config');
+config.addOptions({
+  log: {level: 'error', path: 'error.log'}
+});
+config.addOptions({
+  log: {level: 'trace'}
+});
+console.log(config.log.level); // prints 'trace' 
+console.log(config.log.path); // prints 'error.log' 
 ```
