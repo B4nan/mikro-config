@@ -47,8 +47,10 @@ class Config {
     this.addOptions(configDir + '/default.js');
 
     // load additional config files
-    const files = fs.readdirSync(configDir).filter(file => file.endsWith('.js') && !['default.js', 'local.js'].includes(file));
-    files.forEach(file => this.addOptions(`${configDir}/${file}`));
+    if (fs.existsSync(configDir)) {
+      const files = fs.readdirSync(configDir).filter(file => file.endsWith('.js') && !['default.js', 'local.js'].includes(file));
+      files.forEach(file => this.addOptions(`${configDir}/${file}`));
+    }
 
     // load _environment config
     this.addOptions(`${configDir}/env/${environment}.js`);
