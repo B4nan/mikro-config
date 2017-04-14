@@ -23,10 +23,11 @@ class Config {
 
   /**
    * @param {String} key
+   * @param {*} [defaultValue]
    * @return {*}
    */
-  get(key) {
-    return _.get(CONFIG, key);
+  get(key, defaultValue = undefined) {
+    return _.get(CONFIG, key, defaultValue);
   }
 
   /**

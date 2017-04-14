@@ -1,6 +1,10 @@
 # mikro-config
 
-Tiny config helper, loads configuration in this order:
+Tiny config helper built on top of `lodash`. 
+
+## File order
+
+Mikro-config loads configuration in this order:
 
  - `/config/default.js`
  - `/config/*.js` (all files in config folder excluding local configs)
@@ -55,7 +59,7 @@ module.exports = {
 };
 ```
 
-Configuration files are simply required, so you can also use `JSON` format.
+Configuration files are loaded simply with `require()`, so you can also use `JSON` format.
 
 `/config/default.json`
 
@@ -96,11 +100,13 @@ console.log(config.cache.expiration);
 
 Mikro-config API has 3 public methods: 
 
-### `config.get(key: string): any`
+### `config.get(key: string, defaultValue: any): any`
 
 ```javascript
 const config = require('mikro-config');
 console.log(config.get('cache.expiration')); // prints 300
+console.log(config.get('cache.another')); // prints undefined
+console.log(config.get('cache.another', 123)); // prints 123
 ```
 
 ### `config.has(key: string): bool`
@@ -117,6 +123,7 @@ configuration, or a string path to JS file, that exports the configuration.
 
 ```javascript
 const config = require('mikro-config');
+console.log(config.newKey); // prints undefined
 config.addOptions({newKey: 123});
 console.log(config.newKey); // prints 123 
 ```
