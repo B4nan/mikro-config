@@ -3,7 +3,12 @@
 Tiny config helper built on top of `lodash`. It can merge multiple configuration files, 
 by recursively merging their properties (not replacing entire objects, but merging them). 
 
-[![Build Status](https://travis-ci.org/B4nan/mikro-config.svg?branch=master)](https://travis-ci.org/B4nan/mikro-config)
+[![](https://img.shields.io/npm/v/mikro-config.svg)](https://www.npmjs.com/package/mikro-config)
+[![](https://img.shields.io/npm/dm/mikro-config.svg)](https://www.npmjs.com/package/mikro-config)
+[![Dependency Status](https://david-dm.org/B4nan/mikro-config.svg)](https://david-dm.org/B4nan/mikro-config)
+[![Build Status](https://travis-ci.org/B4nan/mikro-config.svg?branch=master)](https://travis-ci.org/mikro-config/B4nan)
+[![Coverage Status](https://img.shields.io/coveralls/B4nan/mikro-config.svg)](https://coveralls.io/r/B4nan/mikro-config?branch=master)
+
 
 ## File order
 

@@ -5,7 +5,8 @@
   },
   "extends": "eslint:recommended",
   "ignore": [
-    "node_modules"
+    "node_modules",
+    "coverage"
   ],
   "rules": {
     "arrow-spacing": ["error"],

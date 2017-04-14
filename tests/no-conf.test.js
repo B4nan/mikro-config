@@ -31,6 +31,9 @@ test('adding configuration on the fly [object]', () => {
 test('adding configuration on the fly [JSON]', () => {
   const config = require('../mikro-config');
   expect(config).toEqual({});
+  expect(() => {
+    config.addOptions(__dirname + '/not-exists.json');
+  }).toThrow(`Configuration file '${__dirname}/not-exists.json' not found!`);
   config.addOptions(__dirname + '/../package.json');
   expect(config.has('repository')).toBeTruthy();
   expect(config.has('repository.type')).toBeTruthy();
