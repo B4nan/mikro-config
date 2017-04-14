@@ -5,7 +5,6 @@ const _has = require('lodash.has');
 const _merge = require('lodash.merge');
 const fs = require('fs');
 
-const ENVIRONMENT = process.env.NODE_ENV || 'development';
 const CONFIG_DIR = process.env.NODE_CONFIG_DIR || process.cwd() + '/config';
 const CONFIG = {};
 
@@ -20,7 +19,8 @@ const CONFIG = {};
 class Config {
 
   constructor() {
-    this._buildConfig(CONFIG_DIR, ENVIRONMENT);
+    const env = this.getEnvironment();
+    this._buildConfig(CONFIG_DIR, env);
   }
 
   /**
@@ -87,7 +87,7 @@ class Config {
    * @return {String}
    */
   getEnvironment() {
-    return ENVIRONMENT;
+    return process.env.NODE_ENV || 'development';
   }
 
 }
