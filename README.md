@@ -3,6 +3,8 @@
 Tiny config helper built on top of `lodash`. It can merge multiple configuration files, 
 by recursively merging their properties (not replacing entire objects, but merging them). 
 
+It also allows you to use referenced values from your config.
+
 [![](https://img.shields.io/npm/v/mikro-config.svg)](https://www.npmjs.com/package/mikro-config)
 [![](https://img.shields.io/npm/dm/mikro-config.svg)](https://www.npmjs.com/package/mikro-config)
 [![Dependency Status](https://david-dm.org/B4nan/mikro-config.svg)](https://david-dm.org/B4nan/mikro-config)
@@ -63,6 +65,12 @@ module.exports = {
  
   boolProperty: true,
   stringProperty: 'lol',
+  
+  serverPort: '$[server.port]', // this will inline to number `12345`
+  serverHost: '$[server.host]', // this will inline to string `localhost`
+ 
+  // this will inline the host and port, resulting in `ServiceName('localhost', 12345)`
+  serviceDefinition: 'ServiceName($[server.host], $[server.port])',
  
 };
 ```
