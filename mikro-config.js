@@ -118,7 +118,7 @@ class Config {
       const value = config[key];
       if (typeof value === 'string' && value.includes('$[')) {
         this._propagateSingleReference(config, key);
-      } else if (typeof value === 'object') {
+      } else if (typeof value === 'object' && value !== null) {
         this._propagateReferences(value);
       }
     });
