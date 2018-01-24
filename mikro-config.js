@@ -1,6 +1,7 @@
 'use strict';
 
 const _get = require('lodash.get');
+const _set = require('lodash.set');
 const _has = require('lodash.has');
 const _merge = require('lodash.merge');
 const fs = require('fs');
@@ -102,11 +103,37 @@ class Config {
     // load local config
     this.addOptions(`${configDir}/local`, true);
 
+    // override with environment config
+    this._addEnvOptions();
+
     // propagate referenced config values (e.g. `HttpClient($[backend.api])` => `HttpClient('https://api.io/...')`)
     this._propagateReferences(CONFIG);
 
     // support `config.foo.bar` syntax (instead of `config.get('foo.bar')`)
     _merge(this, CONFIG);
+  }
+
+  /**
+   * @private
+   */
+  _addEnvOptions() {
+    if (!process.env.MIKRO_CONFIG_PREFIX) {
+      return;
+    }
+
+    const prefix = process.env.MIKRO_CONFIG_PREFIX;
+
+    Object.keys(process.env).forEach(key => {
+      if (!key.startsWith(prefix)) {
+        return;
+      }
+
+      // convert PREFIX_VAR_NAME to varName
+      let _key = key.substr(prefix.length);
+      _key = _key.replace('___', '.');
+      _key = _key.toLowerCase().replace(/_(\w)/g, (m, w) => w.toUpperCase());
+      _set(CONFIG, _key, process.env[key]);
+    });
   }
 
   /**
@@ -118,7 +145,7 @@ class Config {
       const value = config[key];
       if (typeof value === 'string' && value.includes('$[')) {
         this._propagateSingleReference(config, key);
-      } else if (typeof value === 'object' && value !== null) {
+      } else if (typeof value === 'object') {
         this._propagateReferences(value);
       }
     });

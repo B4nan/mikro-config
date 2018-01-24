@@ -3,6 +3,8 @@
 process.env.NODE_CONFIG_DIR = '';
 
 describe('mikro-config [no conf]', () => {
+  process.env.MIKRO_CONFIG_PREFIX = '';
+
   it('works with no configuration', () => {
     const config = require('../mikro-config');
     expect(config).toEqual({});

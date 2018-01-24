@@ -4,10 +4,6 @@
     "node": true
   },
   "extends": "eslint:recommended",
-  "ignore": [
-    "node_modules",
-    "coverage"
-  ],
   "rules": {
     "arrow-spacing": ["error"],
     "comma-dangle": ["error", "always-multiline"],

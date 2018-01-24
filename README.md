@@ -28,6 +28,21 @@ When there is no `NODE_ENV` set, it defaults to `development`.
 
 You can adjust configuration directory with `NODE_CONFIG_DIR` environment variable.  
 
+## Environment specific variables
+
+It is also possible to override configuration with environment variables. 
+
+First you need to set `MIKRO_CONFIG_PREFIX` variable, then use this prefix 
+for other variables:
+
+```bash
+MIKRO_CONFIG_PREFIX = 'MY_TEST_APP_'
+MY_TEST_APP_KEY1 = 'value2'
+MY_TEST_APP_KEY5___SUB_KEY3 = 'test'
+```
+
+This will override `appKey1` with `'value2'` and `appKey5.subKey3` with value `test`.
+
 ## Installation
 
 `$ yarn add mikro-config`

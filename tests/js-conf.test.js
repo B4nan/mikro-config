@@ -3,6 +3,8 @@
 process.env.NODE_CONFIG_DIR = __dirname + '/js-conf';
 
 describe('mikro-config [js conf]', () => {
+  process.env.MIKRO_CONFIG_PREFIX = '';
+
   it('has `get` method', () => {
     const config = require('../mikro-config');
     expect(config.get('key1')).toBe('value1');
