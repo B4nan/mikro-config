@@ -1,6 +1,6 @@
 {
   "name": "mikro-config",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "tiny node config wrapper for plain JS configuration files",
   "main": "mikro-config.js",
   "repository": {
