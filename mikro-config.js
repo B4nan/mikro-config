@@ -130,7 +130,7 @@ class Config {
 
       // convert PREFIX_VAR_NAME to varName
       let _key = key.substr(prefix.length);
-      _key = _key.replace('___', '.');
+      _key = _key.replace(/___/g, '.');
       _key = _key.toLowerCase().replace(/_(\w)/g, (m, w) => w.toUpperCase());
       _set(CONFIG, _key, process.env[key]);
     });
