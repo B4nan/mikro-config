@@ -1,12 +1,6 @@
-'use strict';
+import { get, set, has, merge } from 'lodash';
+import { existsSync, readdirSync } from 'fs';
 
-const _get = require('lodash.get');
-const _set = require('lodash.set');
-const _has = require('lodash.has');
-const _merge = require('lodash.merge');
-const fs = require('fs');
-
-const CONFIG_DIR = process.env.NODE_CONFIG_DIR || process.cwd() + '/config';
 const CONFIG = {};
 
 /**
@@ -17,45 +11,37 @@ const CONFIG = {};
  *  - /config/env/$NODE_ENV.local.js
  *  - /config/local.js
  */
-class Config {
+export class MikroConfig {
 
-  constructor() {
+  [key: string]: any;
+
+  constructor(private configDir: string = process.env.NODE_CONFIG_DIR || process.cwd() + '/config') {
     const env = this.getEnvironment();
-    this._buildConfig(CONFIG_DIR, env);
+    this.buildConfig(this.configDir, env);
+  }
+
+  get(key: string, defaultValue: any = undefined): any {
+    return get(CONFIG, key, defaultValue);
+  }
+
+  has(key: string): boolean {
+    return has(CONFIG, key);
   }
 
   /**
-   * @param {String} key
-   * @param {*} [defaultValue]
-   * @return {*}
+   * options can be either object or path to config file to merge (checks for existence synchronously)
    */
-  get(key, defaultValue = undefined) {
-    return _get(CONFIG, key, defaultValue);
-  }
-
-  /**
-   * @param {String} key
-   * @return {Boolean}
-   */
-  has(key) {
-    return _has(CONFIG, key);
-  }
-
-  /**
-   * @param {Object|String} options or path to config file to merge (checks for existence synchronously)
-   * @param {Boolean} [optional]
-   */
-  addOptions(options, optional = false) {
+  addOptions(options: Options | string, optional = false) {
     if (typeof options === 'string') {
       if (!options.endsWith('.js') && !options.endsWith('.json')) {
-        if (fs.existsSync(options + '.json')) {
+        if (existsSync(options + '.json')) {
           options += '.json';
         } else {
           options += '.js';
         }
       }
 
-      if (fs.existsSync(options)) {
+      if (existsSync(options)) {
         options = require(options);
       } else if (optional) {
         options = {};
@@ -64,59 +50,49 @@ class Config {
       }
     }
 
-    _merge(CONFIG, options);
+    merge(CONFIG, options);
   }
 
-  /**
-   * @return {String}
-   */
-  getEnvironment() {
+  getEnvironment(): string {
     return process.env.NODE_ENV || 'development';
   }
 
-  /**
-   * @param {String} configDir
-   * @param {String} environment
-   * @private
-   */
-  _buildConfig(configDir, environment) {
+  private buildConfig(configDir: string, environment: string) {
     // load default config file
     this.addOptions(configDir + '/default', true);
 
     // load additional config files
-    if (fs.existsSync(configDir)) {
-      const filter = file => {
-        const isConfigFile = file.endsWith('.js') || file.endsWith('.json');
-        const isIgnored = ['default.js', 'default.json', 'local.js', 'local.json'].includes(file);
-        return isConfigFile && !isIgnored;
-      };
-      const files = fs.readdirSync(configDir).filter(filter);
-      files.forEach(file => this.addOptions(`${configDir}/${file}`));
+    if (existsSync(configDir)) {
+      readdirSync(configDir)
+        .filter((file: string) => {
+          const isConfigFile = file.endsWith('.js') || file.endsWith('.json');
+          const isIgnored = ['default.js', 'default.json', 'local.js', 'local.json'].includes(file);
+
+          return isConfigFile && !isIgnored;
+        })
+        .forEach((file: string) => this.addOptions(`${configDir}/${file}`));
     }
 
-    // load _environment config
+    // load environment config
     this.addOptions(`${configDir}/env/${environment}`, true);
 
-    // load local _environment config
+    // load local environment config
     this.addOptions(`${configDir}/env/${environment}.local`, true);
 
     // load local config
     this.addOptions(`${configDir}/local`, true);
 
     // override with environment config
-    this._addEnvOptions();
+    this.addEnvOptions();
 
     // propagate referenced config values (e.g. `HttpClient($[backend.api])` => `HttpClient('https://api.io/...')`)
-    this._propagateReferences(CONFIG);
+    this.propagateReferences(CONFIG);
 
     // support `config.foo.bar` syntax (instead of `config.get('foo.bar')`)
-    _merge(this, CONFIG);
+    merge(this, CONFIG);
   }
 
-  /**
-   * @private
-   */
-  _addEnvOptions() {
+  private addEnvOptions() {
     if (!process.env.MIKRO_CONFIG_PREFIX) {
       return;
     }
@@ -132,31 +108,23 @@ class Config {
       let _key = key.substr(prefix.length);
       _key = _key.replace(/___/g, '.');
       _key = _key.toLowerCase().replace(/_(\w)/g, (m, w) => w.toUpperCase());
-      _set(CONFIG, _key, process.env[key]);
+      set(CONFIG, _key, process.env[key]);
     });
   }
 
-  /**
-   * @param {Object} config
-   * @private
-   */
-  _propagateReferences(config) {
+  private propagateReferences(config: Options) {
     Object.keys(config).forEach(key => {
       const value = config[key];
+
       if (typeof value === 'string' && value.includes('$[')) {
-        this._propagateSingleReference(config, key);
+        this.propagateSingleReference(config, key);
       } else if (typeof value === 'object' && value) {
-        this._propagateReferences(value);
+        this.propagateReferences(value);
       }
     });
   }
 
-  /**
-   * @param {Object} config
-   * @param {String} key
-   * @private
-   */
-  _propagateSingleReference(config, key) {
+  private propagateSingleReference(config: Options, key: string) {
     const value = config[key];
     const referencedProperty = config[key].match(/\$\[([\w.]+)]/)[1];
     let newValue = this.get(referencedProperty);
@@ -175,10 +143,12 @@ class Config {
     config[key] = value.replace(/\$\[([\w.]+)]/, newValue);
 
     if (config[key].match(/\$\[([\w.]+)]/)) {
-      this._propagateSingleReference(config, key);
+      this.propagateSingleReference(config, key);
     }
   }
 
 }
 
-module.exports = new Config();
+export interface Options {
+  [key: string]: any;
+}

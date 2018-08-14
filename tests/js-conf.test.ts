@@ -1,12 +1,11 @@
-'use strict';
-
 process.env.NODE_CONFIG_DIR = __dirname + '/js-conf';
+
+import config from '../lib';
 
 describe('mikro-config [js conf]', () => {
   process.env.MIKRO_CONFIG_PREFIX = '';
 
   it('has `get` method', () => {
-    const config = require('../mikro-config');
     expect(config.get('key1')).toBe('value1');
     expect(config.get('key2')).toBe(123);
     expect(config.get('key3')).toBe(false);
@@ -28,7 +27,6 @@ describe('mikro-config [js conf]', () => {
   });
 
   it('has direct property getter', () => {
-    const config = require('../mikro-config');
     expect(config.key1).toBe('value1');
     expect(config.key2).toBe(123);
     expect(config.key3).toBe(false);
@@ -41,7 +39,6 @@ describe('mikro-config [js conf]', () => {
   });
 
   it('has `has` method', () => {
-    const config = require('../mikro-config');
     expect(config.has('key1')).toBe(true);
     expect(config.has('key2')).toBe(true);
     expect(config.has('key3')).toBe(true);

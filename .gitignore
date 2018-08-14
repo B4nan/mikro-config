@@ -1,5 +1,7 @@
 /node_modules
+/dist
 /coverage
 /.idea
 /yarn.lock
+/yarn-error.log
 /.coveralls.yml
