@@ -31,11 +31,15 @@ export class MikroConfig {
   /**
    * options can be either object or path to config file to merge (checks for existence synchronously)
    */
-  addOptions(options: Options | string, optional = false) {
+  addOptions(options: object | string, optional = false) {
     if (typeof options === 'string') {
-      if (!options.endsWith('.js') && !options.endsWith('.json')) {
+      if (!options.endsWith('.js') && !options.endsWith('.json') && !options.endsWith('.ts')) {
         if (existsSync(options + '.json')) {
           options += '.json';
+        } else if (existsSync(options + '.js')) {
+          options += '.js';
+        } else if (existsSync(options + '.ts')) {
+          options += '.ts';
         } else {
           options += '.js';
         }
@@ -65,7 +69,7 @@ export class MikroConfig {
     if (existsSync(configDir)) {
       readdirSync(configDir)
         .filter((file: string) => {
-          const isConfigFile = file.endsWith('.js') || file.endsWith('.json');
+          const isConfigFile = file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.json');
           const isIgnored = ['default.js', 'default.json', 'local.js', 'local.json'].includes(file);
 
           return isConfigFile && !isIgnored;

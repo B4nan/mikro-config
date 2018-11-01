@@ -24,6 +24,9 @@ Mikro-config loads configuration in this order:
 
 You can also use `JSON` format instead of plain JS objects.
 
+For typescript applications, that runs via `ts-node` there is also possibility to use TS files. Keep in mind that TS file
+will be ignored in case there is JS file with same name (JS files will be preferred). 
+
 When there is no `NODE_ENV` set, it defaults to `development`. 
 
 You can adjust configuration directory with `NODE_CONFIG_DIR` environment variable.  
@@ -119,6 +122,74 @@ Configuration files are loaded simply with `require()`, so you can also use `JSO
 }
 ```
 
+You can also use typescript file (but keep in mind that when there is also JS file with same, TS one will be ignored):
+
+`/config/default.ts`
+
+```typescript
+export const objectProperty {
+  // Sample comment
+  path: __dirname + '/files',
+  anotherProperty: {
+    size: 10, // MB
+  },
+};
+ 
+export const cache = {
+  expiration: 300, // 5 min
+};
+ 
+export const server = {
+  port: 12345,
+  host: 'localhost',
+  version: '1.2.3',
+};
+
+export const boolProperty = true;
+export const stringProperty = 'lol';
+
+export const serverPort = '$[server.port]'; // this will inline to number `12345`
+export const serverHost = '$[server.host]'; // this will inline to string `localhost`
+ 
+// this will inline the host and port, resulting in `ServiceName('localhost', 12345)`
+export const serviceDefinition = 'ServiceName($[server.host], $[server.port])';
+```
+
+Or you can use JS like syntax:
+
+```typescript
+export = {
+ 
+  objectProperty: {
+    // Sample comment
+    path: __dirname + '/files',
+    anotherProperty: {
+      size: 10, // MB
+    },
+  },
+ 
+  cache: {
+    expiration: 300, // 5 min
+  },
+ 
+  server: {
+    port: 12345,
+    host: 'localhost',
+    version: '1.2.3',
+  },
+ 
+  boolProperty: true,
+  stringProperty: 'lol',
+  
+  serverPort: '$[server.port]', // this will inline to number `12345`
+  serverHost: '$[server.host]', // this will inline to string `localhost`
+ 
+  // this will inline the host and port, resulting in `ServiceName('localhost', 12345)`
+  serviceDefinition: 'ServiceName($[server.host], $[server.port])',
+ 
+};
+```
+
 ## Usage
 
 First you need to require the module, then you can use two ways to get properties. First 
@@ -170,7 +241,7 @@ console.log(config.newKey); // prints 123
 ```javascript
 import config from 'mikro-config';
 
-config.addOptions(__dirname + '/routes'); // load routes.js file exporting routes object
+config.addOptions(__dirname + '/routes'); // load routes.ts file exporting routes object
 console.log(config.routes); // prints routes object 
 ```
 
