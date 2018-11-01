@@ -125,7 +125,12 @@ First you need to require the module, then you can use two ways to get propertie
 way is to directly access property on config object, the other is to use `get`/`has` methods.  
 
 ```javascript
-const config = require('mikro-config');
+// in javascript use default property
+const config = require('mikro-config').default;
+console.log(config.cache.expiration);
+
+// in typescript use default import
+import config from 'mikro-config';
 console.log(config.cache.expiration);
 ```
 
@@ -134,7 +139,8 @@ Mikro-config API has 3 public methods:
 ### `config.get(key: string, defaultValue: any): any`
 
 ```javascript
-const config = require('mikro-config');
+import config from 'mikro-config';
+
 console.log(config.get('cache.expiration')); // prints 300
 console.log(config.get('cache.another')); // prints undefined
 console.log(config.get('cache.another', 123)); // prints 123
@@ -143,7 +149,8 @@ console.log(config.get('cache.another', 123)); // prints 123
 ### `config.has(key: string): bool`
 
 ```javascript
-const config = require('mikro-config');
+import config from 'mikro-config';
+
 console.log(config.has('cache.expiration')); // prints true
 ```
 
@@ -153,14 +160,16 @@ This method is used for adding configuration on the fly. You can pass an object 
 configuration, or a string path to JS/JSON file, that exports the configuration. 
 
 ```javascript
-const config = require('mikro-config');
+import config from 'mikro-config';
+
 console.log(config.newKey); // prints undefined
 config.addOptions({newKey: 123});
 console.log(config.newKey); // prints 123 
 ```
 
 ```javascript
-const config = require('mikro-config');
+import config from 'mikro-config';
+
 config.addOptions(__dirname + '/routes'); // load routes.js file exporting routes object
 console.log(config.routes); // prints routes object 
 ```
@@ -170,7 +179,8 @@ console.log(config.routes); // prints routes object
 When multiple configuration files has same keys, their values are merged instead of replacement. 
 
 ```javascript
-const config = require('mikro-config');
+import config from 'mikro-config';
+
 config.addOptions({
   log: {level: 'error', path: 'error.log'}
 });
