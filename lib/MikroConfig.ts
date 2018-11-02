@@ -69,7 +69,7 @@ export class MikroConfig {
     if (existsSync(configDir)) {
       readdirSync(configDir)
         .filter((file: string) => {
-          const isConfigFile = file.endsWith('.js') || file.endsWith('.ts') || file.endsWith('.json');
+          const isConfigFile = file.endsWith('.js') || (file.endsWith('.ts') && !file.endsWith('.d.ts')) || file.endsWith('.json');
           const isIgnored = ['default.js', 'default.json', 'local.js', 'local.json'].includes(file);
 
           return isConfigFile && !isIgnored;
