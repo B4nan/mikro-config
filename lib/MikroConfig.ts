@@ -1,5 +1,5 @@
 import { get, set, has, merge } from 'lodash';
-import { existsSync, readdirSync } from 'fs';
+import { existsSync, readdirSync, realpathSync } from 'fs';
 
 const CONFIG = {};
 
@@ -46,7 +46,7 @@ export class MikroConfig {
       }
 
       if (existsSync(options)) {
-        options = require(options);
+        options = require(realpathSync(options));
       } else if (optional) {
         options = {};
       } else {
